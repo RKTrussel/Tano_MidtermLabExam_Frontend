@@ -10,8 +10,13 @@ const BookForm = (props) => {
     const [description, setDescription] = useState('');
     const [validateForm, setValidateForm] = useState(false);
 
-    const handleInputChange = (setter) => (event) => {
+    const handleInputChange = (setter, fieldName) => (event) => {
         setter(event.target.value);
+
+        if(props.formErrors[fieldName])
+        {
+            props.onClearError(fieldName);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -37,7 +42,7 @@ const BookForm = (props) => {
                     <Form.Control
                         type="text"
                         value={title}
-                        onChange={handleInputChange(setTitle)}
+                        onChange={handleInputChange(setTitle, 'title')}
                         isInvalid={!!props.formErrors.title}
                         required
                         />
@@ -49,7 +54,7 @@ const BookForm = (props) => {
                     <Form.Control
                         type="text"
                         value={author}
-                        onChange={handleInputChange(setAuthor)}
+                        onChange={handleInputChange(setAuthor, 'author')}
                         isInvalid={!!props.formErrors.author}
                         required
                         />
@@ -61,7 +66,7 @@ const BookForm = (props) => {
                     <Form.Control
                         type="number"
                         value={publishedYear}
-                        onChange={handleInputChange(setPublishedYear)}
+                        onChange={handleInputChange(setPublishedYear, 'published_year')}
                         isInvalid={!!props.formErrors.published_year}
                         required
                         />
@@ -73,7 +78,7 @@ const BookForm = (props) => {
                     <Form.Control
                         type="text"
                         value={genre}
-                        onChange={handleInputChange(setGenre)}
+                        onChange={handleInputChange(setGenre, 'genre')}
                         isInvalid={!!props.formErrors.genre}
                         required
                         />
@@ -86,7 +91,7 @@ const BookForm = (props) => {
                         as="textarea"
                         value={description}
                         rows={5}
-                        onChange={handleInputChange(setDescription)}
+                        onChange={handleInputChange(setDescription, 'description')}
                         isInvalid={!!props.formErrors.description}
                         required
                         />
