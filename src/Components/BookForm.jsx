@@ -97,7 +97,7 @@ const BookForm = (props) => {
                         />
                     <Form.Control.Feedback type="invalid">{props.formErrors.description}</Form.Control.Feedback>
                 </Form.Group>
-                <Stack direction="horizontal" gap={3}>
+                <Stack direction="horizontal" gap={3} className="mt-3">
                     <Button variant="primary" type="submit">Submit</Button>
                     <Link to="/" className="btn btn-secondary" role="button">Cancel</Link>
                 </Stack>

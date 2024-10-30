@@ -36,7 +36,8 @@ const EditBook = () => {
     return(
         <>
             <Container>
-                <h1>Edit Book</h1>
+                <h1 className="text-center">Edit Book</h1>
+                <hr />
                 <h3>Original Details of the Selected Book: </h3>
                 <p className="fs-6">Title: {data.title}</p>
                 <p className="fs-6">Author: {data.author}</p>
