@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap';
+import { Container, Modal, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -8,6 +8,9 @@ import BookForm from '../Components/BookForm';
 const EditBook = () => {
     const { id } = useParams();
     const [data, setData] = useState([]);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const [validationErrors, setValidationErrors] = useState([]);
     const navigate = useNavigate();
 
@@ -38,12 +41,24 @@ const EditBook = () => {
             <Container>
                 <h1 className="text-center">Edit Book</h1>
                 <hr />
-                <h3>Original Details of the Selected Book: </h3>
-                <p className="fs-6">Title: {data.title}</p>
-                <p className="fs-6">Author: {data.author}</p>
-                <p className="fs-6">Published Year: {data.published_year}</p>
-                <p className="fs-6">Genre: {data.genre}</p>
-                <p className="fs-6">Description: {data.description}</p>
+                    <Button variant="primary" onClick={handleShow}>Show Details of the Book</Button>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Original Details of the Book</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Title: {data.title}</p>
+                            <p>Author: {data.author}</p>
+                            <p>Published Year: {data.published_year}</p>
+                            <p>Genre: {data.genre}</p>
+                            <p>Description: {data.description}</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 <hr />
                 <BookForm onSubmit={getData} formErrors={validationErrors} />
             </Container>
