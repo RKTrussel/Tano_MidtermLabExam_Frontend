@@ -40,7 +40,14 @@ const BookList = () => {
                 {allBooks.map(book => (
                     <div className="border rounded" key={book.id}>
                         <Stack direction="horizontal" gap={3} className="m-4">
-                            <label className="fs-4">{book.title}</label>
+                            <div>
+                                <label className="fs-4 d-block">{book.title}</label>
+                                <label className="fs-6 d-block">
+                                    <em>
+                                        Author: {book.author}
+                                    </em>
+                                </label>
+                            </div>
                             <ButtonGroup className="ms-auto">
                                 <Link to={`/viewBook/${book.id}`} className="btn btn-primary">View</Link>
                                 <Link to={`/editBook/${book.id}`} className="btn btn-secondary">Edit</Link>
