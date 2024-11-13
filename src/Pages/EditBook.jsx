@@ -1,7 +1,6 @@
 import { Container, Modal, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import BookForm from '../Components/BookForm';
 
 
@@ -23,17 +22,35 @@ const EditBook = () => {
             .catch(error => console.error("Error fetching book details: ", error));
     }, []);
 
+    const handleClearError = (field) => {
+        setValidationErrors((prevErrors) => ({
+            ...prevErrors,
+            [field]: undefined,
+        }));
+    };
+
     const getData = async (data) => {
-        axios.put('http://127.0.0.1:8000/api/books/' + id, data)
-            .then(response => {navigate('/')})
-            .catch(error => {
-                if(error.response && error.response.status === 422)
-                {
-                    const backEndErrors = error.response.data.validationErrors;
-                    setValidationErrors(backEndErrors);
-                } else
-                    console.error('Error updating a book: ', error);
-            })
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/books/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if(response.ok)
+                navigate('/');
+            else if(response.status === 422)
+            {
+                const backendErrors = await response.json();
+                console.log(backendErrors.validationErrors);
+                setValidationErrors(backendErrors.validationErrors);
+            }
+        } catch(error) {
+            console.log('Error has occured', error);
+        }
     };
 
     return(
@@ -60,7 +77,7 @@ const EditBook = () => {
                         </Modal.Footer>
                     </Modal>
                 <hr />
-                <BookForm onSubmit={getData} formErrors={validationErrors} />
+                <BookForm onSubmit={getData} onClearError={handleClearError} formErrors={validationErrors} />
             </Container>
         </>
     );
