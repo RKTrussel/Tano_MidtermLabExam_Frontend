@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Stack, Button, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const BookList = () => {
     const [allBooks, setAllBooks] = useState([]);
     const [error, setError] = useState('');
+    const [databaseError, setDatabaseError] = useState('');
 
     useEffect(() => {
         fetchBooks();
@@ -23,7 +23,7 @@ const BookList = () => {
                     setError(data.error);
                 }
             })
-            .catch(error => console.log('Error fetching data: ', error));
+            .catch(error => {setDatabaseError("Database Not Found")});
     }
 
     const handleDelete = (e, bookId) => {
@@ -32,9 +32,11 @@ const BookList = () => {
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Deleting...";
 
-        axios.delete(`http://127.0.0.1:8000/api/books/${bookId}`)
+        fetch(`http://127.0.0.1:8000/api/books/${bookId}`, {
+            method: 'DELETE'
+        })
             .then(res => {
-                 window.location.reload();
+                window.location.reload();
             })
             .catch(error => console.log("Network error: ", error));
         
@@ -47,6 +49,12 @@ const BookList = () => {
                 {error && (
                     <h1>
                         {error}
+                    </h1>
+                )}
+
+                {databaseError && (
+                    <h1>
+                        {databaseError}
                     </h1>
                 )}
 
